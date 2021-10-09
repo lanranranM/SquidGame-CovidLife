@@ -13,6 +13,9 @@ BLACK = (0,0,0)
 GRAY = (128,128,128)
 LIGHTGRAY = (192,192,192)
 
+# game name
+c_game_name = "SquidGame: Covid Life"
+
 # Window width and height
 c_width = 1080
 c_height = 608
@@ -31,7 +34,7 @@ c_redline_height = c_height
 c_redline_color = RED
 
 # Player attributes
-c_player_file = os.path.join(c_asset_folder, 'redman.png')
+c_player_file = os.path.join(c_asset_folder, 'player.png')
 c_player_width = c_width // 10
 c_player_height = int(c_player_width * 1.5)
 

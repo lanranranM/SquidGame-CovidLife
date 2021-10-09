@@ -6,9 +6,9 @@ from gvars import *
 class Player(Sprite):
     def __init__(self):
         super().__init__()
-        image = pg.image.load(c_player_file).convert()
+        image = pg.image.load(c_player_file).convert_alpha()
         self.image = pg.transform.scale(image, (c_player_width, c_player_height))
-        self.image.set_colorkey(WHITE)
+        #self.image.set_colorkey(WHITE)
         self.rect = self.image.get_rect()
         self.rect.right = c_redline_left
     
