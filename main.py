@@ -1,5 +1,7 @@
 import pygame as pg
 import sys, time
+
+from pygame import surface
 from gvars import *
 from entities import Player, Magic, Student, Cat
 
@@ -53,10 +55,11 @@ def gameOn():
         cat_sprites.update()
 
         drawBackground()
-        player_sprites.draw(screen)
         magic_sprites.draw(screen)
         student_sprites.draw(screen)
+        drawBackground(True)
         cat_sprites.draw(screen)
+        player_sprites.draw(screen)
 
         score_board = font_score.render('Score: {}'.format(score), False, BLACK)
         screen.blit(score_board, (10, 0))
@@ -89,10 +92,11 @@ def gameOver():
         cat_sprites.update()
 
         drawBackground()
-        player_sprites.draw(screen)
         magic_sprites.draw(screen)
         student_sprites.draw(screen)
+        drawBackground(True)
         cat_sprites.draw(screen)
+        player_sprites.draw(screen)
 
         score_board = font_score.render('Score: {}'.format(score), False, BLACK)
         screen.blit(score_board, (10, 0))
@@ -155,9 +159,15 @@ def handleMouseDown():
     magic = Magic()
     magic_sprites.add(magic)
 
-def drawBackground():
+def drawBackground(layer2 = False):
+    if layer2:
+        screen.blit(pg.image.load(c_bg_file2),(0,0))
+        return    
     screen.fill((255,255,255))
+    bg = pg.image.load(c_bg_file)
+    screen.blit(bg,(0,0))
     pg.draw.rect(screen, c_redline_color, redline)
+
 
 def clearGroup(group):
     for item in group:

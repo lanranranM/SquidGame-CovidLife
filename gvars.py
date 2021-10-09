@@ -16,27 +16,29 @@ LIGHTGRAY = (192,192,192)
 # game name
 c_game_name = "SquidGame: Covid Life"
 
+# asset folder name
+c_asset_folder = 'assets'
+
 # Window width and height
 c_width = 1080
 c_height = 608
+c_bg_file = os.path.join(c_asset_folder, 'bg1_darken.png')
+c_bg_file2 = os.path.join(c_asset_folder, 'classroom.png')
 
 # frame rate
 c_fps = 60
 
-# asset folder name
-c_asset_folder = 'assets'
-
 # Red line coordinate, dimensions, and color
-c_redline_left = c_width // 4
+c_redline_left = c_width // 6
 c_redline_top = 0
 c_redline_width = 5
 c_redline_height = c_height
-c_redline_color = RED
+c_redline_color = BLACK
 
 # Player attributes
 c_player_file = os.path.join(c_asset_folder, 'player.png')
-c_player_width = c_width // 10
-c_player_height = int(c_player_width * 1.5)
+c_player_width = c_width // 15
+c_player_height = c_player_width
 
 # The magic attributes
 c_magic_width = 10
@@ -49,10 +51,10 @@ c_magic_travel_time = 1.8
 c_magic_speed = int((c_width - c_redline_left) / c_magic_travel_time / c_fps)
 
 # The student attributes
-c_student_file = os.path.join(c_asset_folder, 'greenman.png')
-c_student_good_file = os.path.join(c_asset_folder, 'greenman_good.png')
+c_student_file = os.path.join(c_asset_folder, 'student_bad1.png')
+c_student_good_file = os.path.join(c_asset_folder, 'student_good1.png')
 c_student_width = c_width // 15
-c_student_height = int(c_student_width * 1.8)
+c_student_height = c_student_width
 # time needed for a student to reach the line
 c_student_time = 3
 # student moving speed, calculated from the time
@@ -65,7 +67,7 @@ c_time_between = 1.5
 # The cat attributes
 c_cat_file = os.path.join(c_asset_folder, 'cat.png')
 c_cat_width = c_width // 18
-c_cat_height = int(c_cat_width * 1)
+c_cat_height = c_cat_width
 # time before the cat disappear
 c_cat_die_time = 1.5
 # distance the cat travels before disappearing

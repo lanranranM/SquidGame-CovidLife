@@ -10,7 +10,7 @@ class Player(Sprite):
         self.image = pg.transform.scale(image, (c_player_width, c_player_height))
         #self.image.set_colorkey(WHITE)
         self.rect = self.image.get_rect()
-        self.rect.right = c_redline_left
+        self.rect.right = c_redline_left - 10
     
     def update(self):
         mouse_pos = pg.mouse.get_pos()
@@ -27,7 +27,7 @@ class Magic(Sprite):
         self.rect = self.image.get_rect()
         mouse_pos = pg.mouse.get_pos()
         self.rect.x = c_redline_left
-        self.rect.y = min(mouse_pos[1], c_height - c_player_height) + c_player_height//2
+        self.rect.y = min(mouse_pos[1], c_height - c_player_height) + c_player_height//2 #to do
 
     def update(self):
         if self.rect.x <= c_width:
@@ -44,9 +44,9 @@ class Student(Sprite):
         self.good = good
 
         fpath = c_student_good_file if good else c_student_file
-        image = pg.image.load(fpath).convert()
+        image = pg.image.load(fpath).convert_alpha()
         self.image = pg.transform.scale(image, (c_student_width, c_student_height))
-        self.image.set_colorkey(WHITE)
+        #self.image.set_colorkey(WHITE)
 
         self.rect = self.image.get_rect()
         self.rect.x = c_width - 20
@@ -68,9 +68,9 @@ class Student(Sprite):
 class Cat(Sprite):
     def __init__(self, center):
         super().__init__()
-        image = pg.image.load(c_cat_file).convert()
+        image = pg.image.load(c_cat_file).convert_alpha()
         self.image = pg.transform.scale(image, (c_cat_width, c_cat_height))
-        self.image.set_colorkey(WHITE)
+        #self.image.set_colorkey(WHITE)
         self.rect = self.image.get_rect()
         self.rect.center = center
 
