@@ -11,12 +11,10 @@ magic_sprites = None
 player_sprites = None
 student_sprites = None
 cat_sprites = None
-font_fps = None
+font_score = None
 font_lose = None
 text_lose = ""
-
-time_between = c_time_between
-student_speed = c_student_speed
+score = 0
 
 def main():
     while True:
@@ -28,9 +26,11 @@ def mainPage():
     pass
 
 def gameOn():
+    global score
     time_between = c_time_between
     student_speed = c_student_speed
     last_stu_time = 0
+    score = 0
     clearGroup(student_sprites)
     clearGroup(cat_sprites)
     clearGroup(magic_sprites)
@@ -58,17 +58,21 @@ def gameOn():
         student_sprites.draw(screen)
         cat_sprites.draw(screen)
 
-        fps = clock.get_fps()
-        fps = round(fps*10)/10
-        surface = font_fps.render(str(fps), False, BLACK)
-        screen.blit(surface, (10, 0))
+        score_board = font_score.render('Score: {}'.format(score), False, BLACK)
+        screen.blit(score_board, (10, 0))
 
         pg.display.flip()
 
-        if checkCollide() or checkOmission():
+        collide_res = checkCollide()
+        if collide_res < 0:
+            return
+        score += collide_res
+
+        if checkOmission():
             return
 
 def gameOver():
+    global score
     while True:
         clock.tick(c_fps)
         for event in pg.event.get():
@@ -77,6 +81,8 @@ def gameOver():
             elif event.type == pg.KEYDOWN:
                 if event.key == pg.K_r:
                     return
+                elif event.key == pg.K_q or event.key == pg.K_ESCAPE:
+                    sys.exit()
 
         magic_sprites.update()
         student_sprites.update()
@@ -87,6 +93,9 @@ def gameOver():
         magic_sprites.draw(screen)
         student_sprites.draw(screen)
         cat_sprites.draw(screen)
+
+        score_board = font_score.render('Score: {}'.format(score), False, BLACK)
+        screen.blit(score_board, (10, 0))
 
         surface = font_lose.render(text_lose, False, BLACK, LIGHTGRAY)
         text_sz = surface.get_size()
@@ -100,6 +109,7 @@ def checkCollide():
     gonnaLose = False
 
     all_collide = pg.sprite.groupcollide(student_sprites, magic_sprites, False, False)
+
     for student in all_collide:
         magics = all_collide[student]
         for magic in magics:
@@ -109,15 +119,14 @@ def checkCollide():
         cat = Cat(student.getCenter())
         cat_sprites.add(cat)
         student.kill()
-        
-        if gonnaLose:
-            text_lose = " You turn the wrong person into cat! "
-    
+              
     if gonnaLose:
+        text_lose = " You turn the wrong person into cat! "
         for student in student_sprites:
             student.speed = 0
+        return -1
     
-    return gonnaLose
+    return len(all_collide)
 
 def checkOmission():
     global student_sprites, text_lose
@@ -156,7 +165,7 @@ def clearGroup(group):
 
 def init():
     global screen, redline, clock, player, player_sprites, \
-    student_sprites, magic_sprites, cat_sprites, font_fps, font_lose
+    student_sprites, magic_sprites, cat_sprites, font_lose, font_score
 
     pg.init()
     pg.mouse.set_visible(False)
@@ -165,7 +174,7 @@ def init():
     student_sprites = pg.sprite.Group()
     cat_sprites = pg.sprite.Group()
 
-    font_fps = pg.font.SysFont('arial',20)
+    font_score = pg.font.SysFont('arial',25)
     font_lose = pg.font.SysFont('arial', 50)
 
     screen = pg.display.set_mode((c_width, c_height))
