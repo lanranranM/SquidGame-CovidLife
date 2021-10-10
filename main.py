@@ -31,6 +31,9 @@ def main():
         gameOver()
 
 def mainPage():
+    pg.mixer.music.unload()
+    pg.mixer.music.load(c_bgm_start)
+    pg.mixer.music.play()
     screen.fill(BABY_BLUE)
     bg = pg.transform.scale(pg.image.load('assets/header.png'),(c_header_width,c_header_height))
     screen.blit(bg,(270,152))
@@ -182,6 +185,9 @@ def gameOn():
 
 def gameOver():
     global score
+    pg.mixer.music.unload()
+    pg.mixer.music.load(c_bgm_end)
+    pg.mixer.music.play()
     while True:
         clock.tick(c_fps)
         for event in pg.event.get():
@@ -191,16 +197,6 @@ def gameOver():
                 sys.exit()
             elif event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                 return
-        # magic_sprites.update()
-        # student_sprites.update()
-        # cat_sprites.update()
-
-        # drawBackground()
-        # magic_sprites.draw(screen)
-        # student_sprites.draw(screen)
-        # drawBackground(True)
-        # cat_sprites.draw(screen)
-        # player_sprites.draw(screen)
         if ommision == True:
             bg = pg.image.load('assets/endpg.png')
             screen.blit(bg,(0,0))

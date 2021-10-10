@@ -21,6 +21,11 @@ c_game_name = "SquidGame: Covid Life"
 
 # asset folder name
 c_asset_folder = 'assets'
+c_bgm_folder = os.path.join(c_asset_folder,'bgm')
+
+# bgm
+c_bgm_start = os.path.join(c_bgm_folder,'Alla-Turca.mp3')
+c_bgm_end = os.path.join(c_bgm_folder,'start_again.mp3')
 
 # Window width and height
 c_width = 1080
