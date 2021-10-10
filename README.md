@@ -1,1 +1,3 @@
 # SquidGame-CovidLife
+
+This game takes place in the world of the famous Korean tv series "Squid Game". Here, you are a guard at the gate of a university. Lots of students pours in every day. Some wear masks and some don't. To avoid COVID-19 spreading, you are responsible for stopping students who don't wear masks entering the campus. Instead of using firearms, you will use a magic spell that turns people into cats temporarily without hurting them. You must not cast the spell on the mask-wearing students, and you must not let students not wearing masks in. Otherwise, you will be fired!!
