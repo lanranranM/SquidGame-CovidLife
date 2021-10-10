@@ -17,6 +17,8 @@ font_score = None
 font_lose = None
 text_lose = ""
 score = 0
+layer_1 = None
+layer_2 = None
 
 def main():
     while True:
@@ -131,12 +133,12 @@ def gameOver():
         pg.display.flip()
 
 def drawBackground(layer2 = False):
+    global layer_1, layer_2
     if layer2:
-        screen.blit(pg.image.load(c_bg_file2),(0,0))
-        return    
-    screen.fill((255,255,255))
+        screen.blit(layer_2,(0,0))
+        return
     bg = pg.image.load(c_bg_file)
-    screen.blit(bg,(0,0))
+    screen.blit(layer_1,(0,0))
     pg.draw.rect(screen, c_redline_color, redline)
 
 def checkCollide():
@@ -197,7 +199,7 @@ def clearGroup(group):
         item.kill()
 
 def init():
-    global screen, redline, clock, player, player_sprites, \
+    global screen, redline, clock, player, player_sprites, layer_1, layer_2,\
     student_sprites, magic_sprites, cat_sprites, font_lose, font_score
 
     pg.init()
@@ -213,6 +215,9 @@ def init():
     screen = pg.display.set_mode((c_width, c_height))
     pg.display.set_caption(c_game_name)
     redline = pg.Rect((c_redline_left, c_redline_top), (c_redline_width, c_redline_height))
+
+    layer_1 = pg.image.load(c_bg_file).convert()
+    layer_2 = pg.image.load(c_bg_file2).convert()
 
     player = Player()
     player_sprites.add(player)
