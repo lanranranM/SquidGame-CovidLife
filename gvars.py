@@ -1,5 +1,7 @@
 import os
 
+from pygame import Color
+
 # Some constants related to the game
 # Writing constant in capical letter looks ugly
 # So lets write all constant in the form "c_{name}"
@@ -12,6 +14,7 @@ BLUE = (0,0,255)
 BLACK = (0,0,0)
 GRAY = (128,128,128)
 LIGHTGRAY = (192,192,192)
+BABY_BLUE = Color('#92d7ef')
 
 # game name
 c_game_name = "SquidGame: Covid Life"
@@ -27,6 +30,10 @@ c_bg_file2 = os.path.join(c_asset_folder, 'classroom.png')
 
 # frame rate
 c_fps = 60
+
+# main page
+c_header_width = c_width // 2
+c_header_height = c_height // 3
 
 # Red line coordinate, dimensions, and color
 c_redline_left = c_width // 6

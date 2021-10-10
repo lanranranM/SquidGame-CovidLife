@@ -25,7 +25,30 @@ def main():
         gameOver()
 
 def mainPage():
-    pass
+    screen.fill(BABY_BLUE)
+    bg = pg.transform.scale(pg.image.load('assets/header.png'),(c_header_width,c_header_height))
+    screen.blit(bg,(270,152))
+    bg = pg.image.load('assets/student_front1.png')
+    screen.blit(bg,(200,450))
+    bg = pg.image.load('assets/player_front1.png')
+    screen.blit(bg,(360,450))
+    bg = pg.image.load('assets/player_front2.png')
+    screen.blit(bg,(520,450))
+    bg = pg.image.load('assets/player_front3.png')
+    screen.blit(bg,(680,450))
+    bg = pg.image.load('assets/student_front2.png')
+    screen.blit(bg,(840,450))
+    bg = pg.transform.scale(pg.image.load('assets/cat.png'),(c_cat_width*2,c_cat_height*2))
+    screen.blit(bg,(850,370))
+    pg.display.flip()
+    while True:
+        for event in pg.event.get():
+            if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_q):
+                pg.display.quit()
+                pg.quit()
+                sys.exit()
+            if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
+                return
 
 def gameOn():
     global score
@@ -107,6 +130,14 @@ def gameOver():
 
         pg.display.flip()
 
+def drawBackground(layer2 = False):
+    if layer2:
+        screen.blit(pg.image.load(c_bg_file2),(0,0))
+        return    
+    screen.fill((255,255,255))
+    bg = pg.image.load(c_bg_file)
+    screen.blit(bg,(0,0))
+    pg.draw.rect(screen, c_redline_color, redline)
 
 def checkCollide():
     global student_sprites, magic_sprites, cat_sprites, text_lose
@@ -159,14 +190,6 @@ def handleMouseDown():
     magic = Magic()
     magic_sprites.add(magic)
 
-def drawBackground(layer2 = False):
-    if layer2:
-        screen.blit(pg.image.load(c_bg_file2),(0,0))
-        return    
-    screen.fill((255,255,255))
-    bg = pg.image.load(c_bg_file)
-    screen.blit(bg,(0,0))
-    pg.draw.rect(screen, c_redline_color, redline)
 
 
 def clearGroup(group):
