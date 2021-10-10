@@ -70,12 +70,12 @@ class Cat(Sprite):
         super().__init__()
         image = pg.image.load(c_cat_file).convert_alpha()
         self.image = pg.transform.scale(image, (c_cat_width, c_cat_height))
-        #self.image.set_colorkey(WHITE)
         self.rect = self.image.get_rect()
         self.rect.center = center
 
         self.create_time = time.time()
         self.y_start = center[1]
+        pg.mixer.Channel(1).play(pg.mixer.Sound(c_bgm_cat))
     
     def update(self):
         timediff = time.time() - self.create_time

@@ -31,9 +31,9 @@ def main():
         gameOver()
 
 def mainPage():
-    pg.mixer.music.unload()
-    pg.mixer.music.load(c_bgm_start)
-    pg.mixer.music.play()
+    # pg.mixer.music.unload()
+    # pg.mixer.music.load(c_bgm_start)
+    pg.mixer.Channel(0).play(pg.mixer.Sound(c_bgm_start))
     screen.fill(BABY_BLUE)
     bg = pg.transform.scale(pg.image.load('assets/header.png'),(c_header_width,c_header_height))
     screen.blit(bg,(270,152))
@@ -185,9 +185,10 @@ def gameOn():
 
 def gameOver():
     global score
-    pg.mixer.music.unload()
-    pg.mixer.music.load(c_bgm_end)
-    pg.mixer.music.play()
+    # pg.mixer.music.unload()
+    # pg.mixer.music.load(c_bgm_end)
+    # pg.mixer.music.play()
+    pg.mixer.Channel(0).play(pg.mixer.Sound(c_bgm_end))
     while True:
         clock.tick(c_fps)
         for event in pg.event.get():
