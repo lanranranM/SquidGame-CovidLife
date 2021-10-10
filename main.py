@@ -68,6 +68,8 @@ def gameOn():
     clearGroup(student_sprites)
     clearGroup(cat_sprites)
     clearGroup(magic_sprites)
+    clearGroup(banner_sprites)
+    clearGroup(night_sprites)
     time_last_hour = time.time()
     now_hour = 9
 
