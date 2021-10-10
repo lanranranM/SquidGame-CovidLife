@@ -16,9 +16,9 @@ cat_sprites = None
 banner_sprites = None
 night_sprites = None
 font_score = None
-font_lose = None
 score = 0
 now_hour = 0
+date = 1
 layer_1 = None
 layer_2 = None
 ommision = False
@@ -59,7 +59,7 @@ def mainPage():
                 return
 
 def gameOn():
-    global score, ommision,collision, now_hour
+    global score, ommision,collision, now_hour, date
 
     time_between = c_time_between
     student_speed = c_student_speed
@@ -121,7 +121,7 @@ def gameOn():
                 animation_time = c_student_time + c_night_time
 
                 def set_time():
-                    global now_hour
+                    global now_hour, date
                     nonlocal animation_on, animation_start, animation_time, time_last_hour
                     
                     banner = Banner("newday")
@@ -129,12 +129,14 @@ def gameOn():
 
                     time_last_hour += c_banner_time
                     now_hour = 9
+                    date+=1
 
                     animation_on = True
                     animation_start = time.time()
                     animation_time = c_banner_time
 
                 animation_callback = set_time
+                
 
             else:
                 time_between = c_time_between
@@ -156,10 +158,13 @@ def gameOn():
         night_sprites.draw(screen)
 
         score_board = font_score.render('Score: {}'.format(score), False, BLACK)
-        screen.blit(score_board, (10, 0))
+        screen.blit(score_board, (950, 0))
 
-        time_board = font_score.render('{}:00'.format(now_hour), False, BLACK)
-        screen.blit(time_board, (10, font_score.get_linesize()))
+        time_board = font_score.render('Time: {}:00'.format(now_hour), False, BLACK)
+        screen.blit(time_board, (950, font_score.get_linesize()))
+
+        date_board = font_score.render('The {}th day'.format(date), False, BLACK)
+        screen.blit(date_board, (950, font_score.get_linesize()*2))
 
         pg.display.flip()
 
@@ -271,7 +276,7 @@ def clearGroup(group):
 
 def init():
     global screen, redline, clock, player, player_sprites, layer_1, layer_2,\
-    student_sprites, magic_sprites, cat_sprites, font_lose, font_score,\
+    student_sprites, magic_sprites, cat_sprites, font_score,\
     ommision, collision, banner_sprites, night_sprites
 
     pg.init()
@@ -289,8 +294,8 @@ def init():
     banner_sprites = pg.sprite.Group()
     night_sprites = pg.sprite.Group()
 
-    font_score = pg.font.SysFont('arial',30)
-    font_lose = pg.font.SysFont('arial', 50)
+    font_score = pg.font.SysFont('arial',20)
+    font_score.set_bold(True)
 
     layer_1 = pg.image.load(c_bg_file).convert()
     layer_2 = pg.image.load(c_bg_file2).convert()
