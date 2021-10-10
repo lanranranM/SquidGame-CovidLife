@@ -1,7 +1,6 @@
 import pygame as pg
 import sys, time
 
-from pygame import surface
 from gvars import *
 from entities import Player, Magic, Student, Cat, Banner, Night
 
@@ -16,6 +15,7 @@ cat_sprites = None
 banner_sprites = None
 night_sprites = None
 font_score = None
+font_author = None
 score = 0
 now_hour = 0
 date = 1
@@ -51,6 +51,10 @@ def mainPage():
     screen.blit(bg,(840,450))
     bg = pg.transform.scale(pg.image.load('assets/cat.png'),(c_cat_width*2,c_cat_height*2))
     screen.blit(bg,(850,370))
+
+    authors = font_author.render('Game created by @lanran and @yuheng-wu', True, GRAY)
+    screen.blit(authors, ((c_width - authors.get_width())//2, c_height - authors.get_height() - 5))
+
     pg.display.flip()
     while True:
         for event in pg.event.get():
@@ -75,6 +79,9 @@ def gameOn():
     clearGroup(night_sprites)
     time_last_hour = time.time()
     now_hour = 9
+
+    ommision = False
+    collision = False
 
     animation_on = False
     animation_start = None
@@ -276,7 +283,7 @@ def clearGroup(group):
 def init():
     global screen, redline, clock, player, player_sprites, layer_1, layer_2,\
     student_sprites, magic_sprites, cat_sprites, font_score,\
-    ommision, collision, banner_sprites, night_sprites
+    ommision, collision, banner_sprites, night_sprites, font_author
 
     pg.init()
     pg.mixer.init()
@@ -295,6 +302,8 @@ def init():
 
     font_score = pg.font.SysFont('arial',20)
     font_score.set_bold(True)
+
+    font_author = pg.font.SysFont('arial', 12)
 
     layer_1 = pg.image.load(c_bg_file).convert()
     layer_2 = pg.image.load(c_bg_file2).convert()
