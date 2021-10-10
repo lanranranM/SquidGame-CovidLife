@@ -17,11 +17,12 @@ banner_sprites = None
 night_sprites = None
 font_score = None
 font_lose = None
-text_lose = ""
 score = 0
 now_hour = 0
 layer_1 = None
 layer_2 = None
+ommision = False
+collision = False
 
 def main():
     while True:
@@ -33,8 +34,10 @@ def mainPage():
     screen.fill(BABY_BLUE)
     bg = pg.transform.scale(pg.image.load('assets/header.png'),(c_header_width,c_header_height))
     screen.blit(bg,(270,152))
+    bg = pg.transform.scale(pg.image.load('assets/start_instr.png'),(c_instr_width,c_instr_height))
+    screen.blit(bg,(350,380))
     bg = pg.image.load('assets/student_front1.png')
-    screen.blit(bg,(200,450))
+    screen.blit(bg,(150,450))
     bg = pg.image.load('assets/player_front1.png')
     screen.blit(bg,(360,450))
     bg = pg.image.load('assets/player_front2.png')
@@ -56,7 +59,8 @@ def mainPage():
                 return
 
 def gameOn():
-    global score, now_hour
+    global score, ommision,collision, now_hour
+
     time_between = c_time_between
     student_speed = c_student_speed
     last_stu_time = 0
@@ -161,10 +165,12 @@ def gameOn():
 
         collide_res = checkCollide()
         if collide_res < 0:
+            collision = True
             return
         score += collide_res
 
         if checkOmission():
+            ommision = True
             return
 
 def gameOver():
@@ -172,31 +178,31 @@ def gameOver():
     while True:
         clock.tick(c_fps)
         for event in pg.event.get():
-            if event.type == pg.QUIT:
+            if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_q):
+                pg.display.quit()
+                pg.quit()
                 sys.exit()
-            elif event.type == pg.KEYDOWN:
-                if event.key == pg.K_r:
-                    return
-                elif event.key == pg.K_q or event.key == pg.K_ESCAPE:
-                    sys.exit()
+            elif event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
+                return
+        # magic_sprites.update()
+        # student_sprites.update()
+        # cat_sprites.update()
 
-        magic_sprites.update()
-        student_sprites.update()
-        cat_sprites.update()
-
-        drawBackground()
-        magic_sprites.draw(screen)
-        student_sprites.draw(screen)
-        drawBackground(True)
-        cat_sprites.draw(screen)
-        player_sprites.draw(screen)
+        # drawBackground()
+        # magic_sprites.draw(screen)
+        # student_sprites.draw(screen)
+        # drawBackground(True)
+        # cat_sprites.draw(screen)
+        # player_sprites.draw(screen)
+        if ommision == True:
+            bg = pg.image.load('assets/endpg.png')
+            screen.blit(bg,(0,0))
+        elif collision == True:
+            bg = pg.image.load('assets/endpg1.png')
+            screen.blit(bg,(0,0))
 
         score_board = font_score.render('Score: {}'.format(score), False, BLACK)
-        screen.blit(score_board, (10, 0))
-
-        surface = font_lose.render(text_lose, False, BLACK, LIGHTGRAY)
-        text_sz = surface.get_size()
-        screen.blit(surface, ((c_width - text_sz[0])//2, (c_height - text_sz[1])//2))
+        screen.blit(score_board, (500,290))
 
         pg.display.flip()
 
@@ -205,12 +211,11 @@ def drawBackground(layer2 = False):
     if layer2:
         screen.blit(layer_2,(0,0))
         return
-    bg = pg.image.load(c_bg_file)
     screen.blit(layer_1,(0,0))
     pg.draw.rect(screen, c_redline_color, redline)
 
 def checkCollide():
-    global student_sprites, magic_sprites, cat_sprites, text_lose
+    global student_sprites, magic_sprites, cat_sprites
     gonnaLose = False
 
     all_collide = pg.sprite.groupcollide(student_sprites, magic_sprites, False, False)
@@ -226,7 +231,6 @@ def checkCollide():
         student.kill()
               
     if gonnaLose:
-        text_lose = " You turn the wrong person into cat! "
         for student in student_sprites:
             student.speed = 0
         return -1
@@ -234,12 +238,11 @@ def checkCollide():
     return len(all_collide)
 
 def checkOmission():
-    global student_sprites, text_lose
+    global student_sprites
 
     student_escaped = None
     for student in student_sprites:
         if student.escaped():
-            text_lose = " You let no-mask person into classroom! "
             student_escaped = student
             break
     
@@ -268,8 +271,8 @@ def clearGroup(group):
 
 def init():
     global screen, redline, clock, player, player_sprites, layer_1, layer_2,\
-    student_sprites, magic_sprites, cat_sprites, banner_sprites, night_sprites,\
-         font_lose, font_score
+    student_sprites, magic_sprites, cat_sprites, font_lose, font_score,\
+    ommision, collision, banner_sprites, night_sprites
 
     pg.init()
     pg.mixer.init()
@@ -294,6 +297,9 @@ def init():
 
     player = Player()
     player_sprites.add(player)
+
+    ommision = False
+    collision = False
 
     clock = pg.time.Clock()
 

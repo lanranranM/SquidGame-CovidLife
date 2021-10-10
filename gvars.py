@@ -34,6 +34,8 @@ c_fps = 60
 # main page
 c_header_width = c_width // 2
 c_header_height = c_height // 3
+c_instr_width = c_width // 3
+c_instr_height = c_instr_width // 8
 
 # Red line coordinate, dimensions, and color
 c_redline_left = c_width // 6
