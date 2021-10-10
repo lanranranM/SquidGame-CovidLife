@@ -79,3 +79,6 @@ c_cat_height = c_cat_width
 c_cat_die_time = 1.5
 # distance the cat travels before disappearing
 c_cat_die_dist = 40
+
+# some time constant
+c_hour_length = 5

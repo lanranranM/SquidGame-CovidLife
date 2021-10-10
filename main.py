@@ -17,6 +17,7 @@ font_score = None
 font_lose = None
 text_lose = ""
 score = 0
+now_hour = 0
 layer_1 = None
 layer_2 = None
 
@@ -53,7 +54,7 @@ def mainPage():
                 return
 
 def gameOn():
-    global score
+    global score, now_hour
     time_between = c_time_between
     student_speed = c_student_speed
     last_stu_time = 0
@@ -61,6 +62,8 @@ def gameOn():
     clearGroup(student_sprites)
     clearGroup(cat_sprites)
     clearGroup(magic_sprites)
+    time_last_hour = time.time()
+    now_hour = 9
 
     while True:
         clock.tick(c_fps)
@@ -73,6 +76,12 @@ def gameOn():
         if time.time() - last_stu_time > time_between:
             student_sprites.add(Student(student_speed))
             last_stu_time = time.time()
+        
+        if time.time() - time_last_hour > c_hour_length:
+            now_hour += 1
+            if now_hour > 12:
+                now_hour -= 12
+            time_last_hour = time.time()
 
         player_sprites.update()
         magic_sprites.update()
@@ -88,6 +97,9 @@ def gameOn():
 
         score_board = font_score.render('Score: {}'.format(score), False, BLACK)
         screen.blit(score_board, (10, 0))
+
+        time_board = font_score.render('{}:00'.format(now_hour), False, BLACK)
+        screen.blit(time_board, (10, font_score.get_linesize()))
 
         pg.display.flip()
 
