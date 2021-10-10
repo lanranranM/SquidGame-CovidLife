@@ -3,7 +3,7 @@ import sys, time
 
 from pygame import surface
 from gvars import *
-from entities import Player, Magic, Student, Cat
+from entities import Player, Magic, Student, Cat, Banner, Night
 
 screen = None
 redline = None
@@ -13,6 +13,8 @@ magic_sprites = None
 player_sprites = None
 student_sprites = None
 cat_sprites = None
+banner_sprites = None
+night_sprites = None
 font_score = None
 font_lose = None
 text_lose = ""
@@ -65,6 +67,11 @@ def gameOn():
     time_last_hour = time.time()
     now_hour = 9
 
+    animation_on = False
+    animation_start = None
+    animation_time = None
+    animation_callback = None
+
     while True:
         clock.tick(c_fps)
         for event in pg.event.get():
@@ -73,7 +80,14 @@ def gameOn():
             elif event.type == pg.MOUSEBUTTONDOWN:
                 handleMouseDown()
         
-        if time.time() - last_stu_time > time_between:
+        if animation_on:
+            if time.time() - animation_start > animation_time:
+                animation_on = False
+                if animation_callback != None:
+                    animation_callback()
+                animation_callback = None
+        
+        if not animation_on and (time.time() - last_stu_time > time_between):
             student_sprites.add(Student(student_speed))
             last_stu_time = time.time()
         
@@ -83,10 +97,50 @@ def gameOn():
                 now_hour -= 12
             time_last_hour = time.time()
 
+            if now_hour == 10 or now_hour == 3:
+                banner = Banner(now_hour)
+                banner_sprites.add(banner)
+                time_last_hour += c_banner_time
+                time_between = c_time_between / 3
+                
+                animation_on = True
+                animation_start = time.time()
+                animation_time = c_banner_time
+
+            elif now_hour == 6:
+                night = Night()
+                night_sprites.add(night)
+                time_last_hour += c_student_time + c_night_time
+
+                animation_on = True
+                animation_start = time.time()
+                animation_time = c_student_time + c_night_time
+
+                def set_time():
+                    global now_hour
+                    nonlocal animation_on, animation_start, animation_time, time_last_hour
+                    
+                    banner = Banner("newday")
+                    banner_sprites.add(banner)
+
+                    time_last_hour += c_banner_time
+                    now_hour = 9
+
+                    animation_on = True
+                    animation_start = time.time()
+                    animation_time = c_banner_time
+
+                animation_callback = set_time
+
+            else:
+                time_between = c_time_between
+
         player_sprites.update()
         magic_sprites.update()
         student_sprites.update()
         cat_sprites.update()
+        banner_sprites.update()
+        night_sprites.update()
 
         drawBackground()
         magic_sprites.draw(screen)
@@ -94,6 +148,8 @@ def gameOn():
         drawBackground(True)
         cat_sprites.draw(screen)
         player_sprites.draw(screen)
+        banner_sprites.draw(screen)
+        night_sprites.draw(screen)
 
         score_board = font_score.render('Score: {}'.format(score), False, BLACK)
         screen.blit(score_board, (10, 0))
@@ -212,21 +268,26 @@ def clearGroup(group):
 
 def init():
     global screen, redline, clock, player, player_sprites, layer_1, layer_2,\
-    student_sprites, magic_sprites, cat_sprites, font_lose, font_score
+    student_sprites, magic_sprites, cat_sprites, banner_sprites, night_sprites,\
+         font_lose, font_score
 
     pg.init()
+    pg.mixer.init()
     pg.mouse.set_visible(False)
+    screen = pg.display.set_mode((c_width, c_height))
+    pg.display.set_caption(c_game_name)
+
+    redline = pg.Rect((c_redline_left, c_redline_top), (c_redline_width, c_redline_height))
+
     magic_sprites = pg.sprite.Group()
     player_sprites = pg.sprite.Group()
     student_sprites = pg.sprite.Group()
     cat_sprites = pg.sprite.Group()
+    banner_sprites = pg.sprite.Group()
+    night_sprites = pg.sprite.Group()
 
-    font_score = pg.font.SysFont('arial',25)
+    font_score = pg.font.SysFont('arial',30)
     font_lose = pg.font.SysFont('arial', 50)
-
-    screen = pg.display.set_mode((c_width, c_height))
-    pg.display.set_caption(c_game_name)
-    redline = pg.Rect((c_redline_left, c_redline_top), (c_redline_width, c_redline_height))
 
     layer_1 = pg.image.load(c_bg_file).convert()
     layer_2 = pg.image.load(c_bg_file2).convert()

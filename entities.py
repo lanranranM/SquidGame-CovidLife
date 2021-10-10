@@ -1,6 +1,6 @@
 import pygame as pg
 from pygame.sprite import Sprite
-import random, time
+import random, time, os
 from gvars import *
 
 class Player(Sprite):
@@ -85,4 +85,51 @@ class Cat(Sprite):
         new_alpha = int((1 - timediff / c_cat_die_time)*255)
         ydiff = int(c_cat_die_dist * timediff / c_cat_die_time)
         self.image.set_alpha(new_alpha)
-        self.rect.y = self.y_start - ydiff
+        self.rect.centery = self.y_start - ydiff
+
+class Banner(Sprite):
+    def __init__(self, hour):
+        super().__init__()
+        image_path = os.path.join(c_asset_folder, '{}.png'.format(hour))
+        image = pg.image.load(image_path).convert_alpha()
+        self.image = pg.transform.scale(image, (c_banner_width, c_banner_height))
+
+        self.rect = self.image.get_rect()
+        self.rect.centery = c_height // 2
+        self.rect.right = 0
+
+        self.start_time = time.time()
+    
+    def update(self):
+        timepass = time.time() - self.start_time
+        if 0 <= timepass < c_banner_travel_time\
+             or timepass > c_banner_travel_time + c_banner_stay_time:
+             self.rect.x += c_banner_speed
+        if self.rect.x > c_width:
+            self.kill()
+
+class Night(Sprite):
+    def __init__(self):
+        super().__init__()
+        image = pg.image.load(c_night_file).convert_alpha()
+        self.image = image
+        self.image.set_alpha(0)
+
+        self.rect = self.image.get_rect()
+        self.rect.x = self.rect.y = 0
+
+        self.start_time = time.time()
+    
+    def update(self):
+        timepass = time.time() - self.start_time - c_student_time
+
+        if 0 <= timepass <= c_night_dim_time:
+            newalpha = int(timepass / c_night_dim_time * 255)
+            self.image.set_alpha(newalpha)
+
+        elif c_night_dim_time + c_night_stay_time <= timepass\
+            <= c_night_time:
+            newalpha = 255 - int((timepass - c_night_dim_time - c_night_stay_time) / c_night_dim_time * 255)
+            self.image.set_alpha(newalpha)
+        elif timepass > c_night_time:
+            self.kill()

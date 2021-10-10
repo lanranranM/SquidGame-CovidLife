@@ -82,3 +82,18 @@ c_cat_die_dist = 40
 
 # some time constant
 c_hour_length = 5
+
+# banner attributes
+# width : height = 3.288
+c_banner_width = 648
+c_banner_height = int(c_banner_width / 3.288)
+c_banner_travel_time = 0.5
+c_banner_stay_time = 1.5
+c_banner_time = (c_banner_travel_time*2 + c_banner_stay_time)
+c_banner_speed = int((c_width + c_banner_width) / 2 / c_fps / c_banner_travel_time)
+
+# night attributes
+c_night_file = os.path.join(c_asset_folder, 'night.png')
+c_night_dim_time = 0.375
+c_night_stay_time = 2.5
+c_night_time = c_night_dim_time*2 + c_night_stay_time
