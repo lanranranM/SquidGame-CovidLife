@@ -32,7 +32,7 @@ py main.py
 
 ### **How to play the game**
 
-The game is controlled by mouse. Moving the mouse and the staff character will move with you. Lefts click to cast magic and turn the targeted student into a cat.
+The game is controlled by mouse. Moving the mouse and the staff character will move with you. Left click to cast magic and turn the targeted student into a cat.
 
 press 'q' to quit the game,  space to restart. 
 
