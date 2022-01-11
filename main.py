@@ -175,7 +175,20 @@ def gameOn():
         time_board = font_score.render('Time: {}:00'.format(now_hour), False, BLACK)
         screen.blit(time_board, (950, font_score.get_linesize()))
 
-        date_board = font_score.render('The {}th day'.format(date), False, BLACK)
+        def order(n):
+            if 4 <= n <= 20:
+                return 'th'
+            else:
+                if n%10 == 1:
+                    return 'st'
+                elif n%10 == 2:
+                    return 'nd'
+                elif n%10 == 3:
+                    return 'rd'
+                else:
+                    return 'th'
+
+        date_board = font_score.render('The {}{} day'.format(date,order(date)), False, BLACK)
         screen.blit(date_board, (950, font_score.get_linesize()*2))
 
         pg.display.flip()
