@@ -1,0 +1,9 @@
+var c_width = 1080
+var c_height = 608
+var BABYBLUE = '#92d7ef'
+var c_header_width = c_width / 2
+var c_header_height = c_height / 3
+var c_instr_width = c_width / 3
+var c_instr_height = c_instr_width / 8
+var c_cat_width = c_width / 18
+var c_cat_height = c_cat_width
