@@ -38,7 +38,7 @@ function create() {
         .setOrigin(0,0);
     this.add.image(680, 450, 'st-p3')
         .setOrigin(0,0);
-    this.add.image(840, 450, 'st-s1')
+    this.add.image(840, 450, 'st-s2')
         .setOrigin(0,0);
     this.add.image(850, 370, 'cat')
         .setDisplaySize(c_cat_width*2, c_cat_height*2)
