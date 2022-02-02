@@ -3,8 +3,6 @@ class StartScreen extends Phaser.Scene {
         super({key: 'StartScreen'});
     }
 
-    cursor = null;
-
     preload() {
         this.load.image('st-header', 'assets/header.png');
         this.load.image('st-p1', 'assets/player_front1.png');
@@ -37,10 +35,22 @@ class StartScreen extends Phaser.Scene {
             .setDisplaySize(c_cat_width*2, c_cat_height*2)
             .setOrigin(0,0);
         
-        this.cursor = this.input.keyboard.createCursorKeys();
+        this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.QKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
     }
 
-    update() {}
+    update() {
+        if (this.spaceKey.isDown) {
+            game.scene.start('GameBody');
+            game.scene.sleep('StartScreen');
+        }
+        else if (this.QKey.isDown) {
+            if (confirm('Leave the game?')) {
+                window.opener = null;
+                window.close();
+            }
+        }
+    }
 };
 
 class GameBody extends Phaser.Scene {
@@ -63,19 +73,29 @@ class GameBody extends Phaser.Scene {
         this.load.image('st-good', 'assets/student_good1.png');
         this.load.image('st-bad', 'assets/student_bad1.png');
         this.load.image('magic', 'assets/magic.png');
+
+        this.load.audio('bgm', 'assets/bgm/Alla-Turca.mp3');
+        this.load.audio('meow', 'assets/bgm/meow.mp3');
     }
 
     create() {
         this.init();
-        this.cursor = this.input.keyboard.createCursorKeys();
-
-        this.player = this.physics.add.sprite(this.x, this.y, 'player').setInteractive();
-        this.player.setCollideWorldBounds(true);
-        this.player.body.setGravityY(0);
 
         this.add.image(0,0,'background')
             .setDisplaySize(c_width, c_height)
             .setOrigin(0,0);
+
+        this.bgm = this.sound.add('bgm', {loop: true});
+        this.bgm.play();
+
+        this.player = this.physics.add.sprite(this.x, this.y, 'player').setOrigin(1,0.5);
+        this.player.setDisplaySize(c_player_width, c_player_height);
+        this.player.setCollideWorldBounds(true);
+        this.player.body.setGravityY(0);
+
+        this.input.on('pointermove', pointer => {
+            this.player.y = pointer.y;
+        });
     }
 };
 
@@ -91,7 +111,7 @@ const config = {
             debug: false
         }
     },
-    scene: [StartScreen]
+    scene: [StartScreen, GameBody]
 };
 
 const game = new Phaser.Game(config);
