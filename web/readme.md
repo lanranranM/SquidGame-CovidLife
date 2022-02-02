@@ -8,7 +8,9 @@ The web version of *SquidGame in CovidLife*.
 
 #### Run on a server
 
-Just upload everything to the server and access with url.
+First, deployment: Upload the entire folder to your site. If you are using GitHub Pages, add the entire folder to the corresponding repository and commit. You only need to deploy it once.
+
+Then, access the game with `<your-url>/<folder-name>`. For example, if your site's URL is `https://example.cc` and the game folder's name is "squidgame", then the link for the game is `https://example.cc/squidgame`.
 
 #### Run locally
 

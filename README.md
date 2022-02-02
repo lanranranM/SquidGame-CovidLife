@@ -1,5 +1,6 @@
 # SquidGame-CovidLife
 
+**Update: the web version of this game is almost ready! [Check it out](#web)** 
 
 ### **Intro**
 
@@ -38,8 +39,15 @@ press 'q' to quit the game,  space to restart.
 
 
 
-**What is the next**
+#### What's next?
 
 - Web version
 - Animation effects of the characters
 
+
+
+<h3 id="web">Web Version</h3>
+
+Still under development.
+
+For detailed information, please refer to the `web` folder.
