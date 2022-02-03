@@ -89,6 +89,7 @@ class GameBody extends Phaser.Scene {
         this.bgm.play();
 
         this.biu = this.sound.add('biu', {loop: false, volume: 0.25});
+        this.meow = this.sound.add('meow', {loop: false});
 
         this.player = this.physics.add.sprite(this.x, this.y, 'player').setOrigin(1,0.5);
         this.player.setDisplaySize(c_player_width, c_player_height);
@@ -101,6 +102,22 @@ class GameBody extends Phaser.Scene {
         // The resource group for students
         this.allGoodStudent = this.physics.add.group();
         this.allBadStudent = this.physics.add.group();
+
+        // The resource group for cats
+        this.allCat = this.physics.add.group();
+
+        // The score text
+        const textStyle = {font: '24px Arial', fill: BLACK, align: 'left'};
+        this.scoreText = this.add.text(5, 5, 'Score: 0', textStyle);
+        this.scoreText.setOrigin(0,0);
+
+        // The date and time
+        this.nowDay = 1;
+        this.nowTime = 9;
+        const timeTextStyle = {font: '24px Arial', fill: BLACK, align: 'right'};
+        this.timeText = this.add.text(c_width-5, 5, this.getTimeText(), timeTextStyle);
+        this.timeText.setOrigin(1,0);
+        this.lastTime = Date.now();
 
         // Use mouse movement to control the player
         this.input.on('pointermove', pointer => {
@@ -135,17 +152,41 @@ class GameBody extends Phaser.Scene {
             }
         });
         this.allGoodStudent.getChildren().forEach(student => {
-            if (student.active && student.x < c_redline_left - c_student_width) {
+            if (student.active && student.x < c_redline_left - c_student_width/2) {
                 this.allGoodStudent.killAndHide(student);
             }
         });
         this.allBadStudent.getChildren().forEach(student => {
             // This student escaped
-            if (student.active && student.x < c_redline_left - c_student_width) {
+            if (student.active && student.x < c_redline_left - c_student_width/2) {
                 this.bgm.stop();
                 this.scene.start('GameEnd-Miss');
             }
         });
+        this.allCat.getChildren().forEach(cat => {
+            if (cat.active) {
+                const timepass = (Date.now() - cat.st_time)/1000;
+                if (timepass > c_cat_die_time) {
+                    this.allCat.killAndHide(cat);
+                }
+                else {
+                    cat.alpha = 1 - timepass/c_cat_die_time;
+                }
+            }
+        });
+
+        const now_time = Date.now(), elapse = (now_time - this.lastTime)/1000;
+        if (elapse > c_hour_length) {
+            this.nowTime++;
+            if (this.nowTime > 12)
+                this.nowTime -= 12;
+            if (this.nowTime == 7) {
+                this.nowDay++;
+                this.nowTime = 9;
+            }
+            this.timeText.setText(this.getTimeText());
+            this.lastTime = now_time;
+        }
     }
 
     addMagic() {
@@ -194,10 +235,42 @@ class GameBody extends Phaser.Scene {
     // You hit a bad student.
     handleBadHit(magic, student) {
         if (magic.active && student.active) {
+            // Update score
             this.score++;
+            this.scoreText.setText(`Score: ${this.score}`);
+
+            // Summon a cute cat
+            const stu_x = student.x, stu_y = student.y;
+            const cat = this.allCat.get(stu_x, stu_y, 'cat');
+            cat.setActive(true);
+            cat.setVisible(true);
+            cat.alpha = 1;
+            cat.st_time = Date.now();
+            cat.setDisplaySize(c_cat_width, c_cat_height);
+            cat.setVelocity(0, -c_cat_die_dist/c_cat_die_time);
+            this.meow.play();
+
+            // Remove the magic and student
             this.allMagic.killAndHide(magic);
             this.allBadStudent.killAndHide(student);
         }
+    }
+
+    // To determine the appropriate ordinal word
+    ordinalWord() {
+        if (this.nowDay >= 10 && this.nowDay <= 19)
+            return 'th';
+        if (this.nowDay % 10 == 1)
+            return 'st';
+        if (this.nowDay % 10 == 2)
+            return 'nd';
+        if (this.nowDay % 10 == 3)
+            return 'rd';
+        return 'th';
+    }
+
+    getTimeText() {
+        return `${this.nowDay}${this.ordinalWord()} day\n${this.nowTime}:00`;
     }
 };
 

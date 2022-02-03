@@ -21,6 +21,10 @@ const c_instr_height = c_instr_width / 8
 // cat
 const c_cat_width = c_width / 18
 const c_cat_height = c_cat_width
+// time before the cat disappear
+const c_cat_die_time = 1.5
+// distance the cat travels before disappearing
+const c_cat_die_dist = 40
 
 // Red line coordinate, dimensions, and color
 const c_redline_left = c_width / 6
@@ -49,3 +53,6 @@ const c_student_prob = 0.5
 const c_student_time = 3
 // student moving speed, calculated from the time
 const c_student_speed = (c_width - c_redline_left) / c_student_time
+
+// # of seconds for an "hour"
+const c_hour_length = 5
