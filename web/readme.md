@@ -2,6 +2,8 @@ A small present!
 
 The web version of *SquidGame in CovidLife*.
 
+[Demo](https://iamwyh.cn/squidgame)
+
 
 ### Run the game
 
@@ -15,7 +17,7 @@ Then, access the game with `<your-url>/<folder-name>`. For example, if your site
 
 Due to Chrome's file protocol restriction, we cannot directly open `index.html`. Follow this guide to run the game on your machine.
 
-First, make sure you have two things installed (I'm sure you have):
+First, make sure you have two things installed:
 
 1. **node.js**: download from https://nodejs.org/en/
 

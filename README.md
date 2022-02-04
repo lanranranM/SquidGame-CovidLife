@@ -1,6 +1,6 @@
 # SquidGame-CovidLife
 
-**Update: the web version of this game is almost ready! [Check it out](#web)** 
+**Update: the web version of this game is ready! [Check it out](https://github.com/lanranranM/SquidGame-CovidLife/tree/main/web)** 
 
 ### **Intro**
 
@@ -41,13 +41,12 @@ press 'q' to quit the game,  space to restart.
 
 #### What's next?
 
-- Web version
 - Animation effects of the characters
 
 
 
-<h3 id="web">Web Version</h3>
+### Web version
 
-Still under development.
+We are happy to announce that the web version for this game is ready!
 
 For detailed information, please refer to the `web` folder.

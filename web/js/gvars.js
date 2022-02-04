@@ -53,6 +53,21 @@ const c_student_prob = 0.5
 const c_student_time = 3
 // student moving speed, calculated from the time
 const c_student_speed = (c_width - c_redline_left) / c_student_time
+// time between two students
+const c_time_between = 1500
 
-// # of seconds for an "hour"
+// number of seconds for an "hour"
 const c_hour_length = 5
+
+// banner
+const c_banner_width = 648
+const c_banner_height = c_banner_width / 3.288
+const c_banner_travel_time = 0.5
+const c_banner_stay_time = 1.5
+const c_banner_time = (c_banner_travel_time*2 + c_banner_stay_time)
+const c_banner_speed = (c_width + c_banner_width) / 2 / c_banner_travel_time
+
+// Nightfall
+const c_night_dim_time = 0.375
+const c_night_stay_time = 2.5
+const c_night_time = c_night_dim_time*2 + c_night_stay_time
